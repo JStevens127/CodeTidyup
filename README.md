@@ -4,7 +4,7 @@ Quickly format and share snippets of your code.
 
 ## Why I Built This
 
-As a software engineer who is also growing an audience, you may periodically share code snippets on Twitter, Reddit, or elsewhere. I found doing so to be quite tedious. Existing tools, like [ray.so](https://ray.so), allow you to add a cool gradient behind your code, but don't help when it comes to formatting the code itself.
+As a software engineer who is also growing an audience, you may periodically share code snippets on Twitter, Reddit, or elsewhere. I found doing so to be quite tedious. Existing tools, like [ray.so](https://ray.so), allow you to add a cool background behind your code, but don't help when it comes to formatting the code itself.
 
 CodeTidyup is the first code sharing tool that includes a customizable, automatic code formatter. It also includes helpful code sharing features such as layouts (e.g. before and after), backgrounds, and more. Give it a try the next time you want to share a code snippet online.
 
