@@ -100,7 +100,7 @@ export default function Home() {
                 </div>
             </div>
             <div className='flex flex-col gap-y-3'>
-                <div className='flex flex-col gap-y-3 p-3 border rounded-lg'>
+                <div className='flex flex-col gap-y-3 p-3 border rounded-xl bg-white'>
                     <div className='flex flex-row items-center justify-between'>
                         <div className='flex flex-row items-center gap-x-2'>
                             <Button variant='outlined' className='items-center flex' onClick={handleFormat}>
