@@ -9,12 +9,20 @@
         "lint": "next lint"
     },
     "dependencies": {
+        "@codemirror/lang-javascript": "^6.2.2",
+        "@headlessui/react": "^2.0.4",
         "@primer/octicons-react": "^19.9.0",
+        "@uiw/codemirror-theme-okaidia": "^4.22.1",
+        "@uiw/react-codemirror": "^4.22.1",
+        "dom-to-image": "^2.6.0",
         "next": "14.2.3",
+        "next-plausible": "^3.12.0",
+        "prettier": "^3.3.0",
         "react": "^18",
         "react-dom": "^18"
     },
     "devDependencies": {
+        "@types/dom-to-image": "^2.6.7",
         "@types/node": "^20",
         "@types/react": "^18",
         "@types/react-dom": "^18",
