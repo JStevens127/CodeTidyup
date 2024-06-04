@@ -1,50 +1,42 @@
 'use client'
 
-import { useState, useRef, useEffect } from 'react'
+import { useState, useEffect } from 'react'
 import prettier from 'prettier/standalone'
 import flow from 'prettier/plugins/flow'
 import esTree from 'prettier/plugins/estree'
 import html from 'prettier/plugins/html'
 import ts from 'prettier/plugins/typescript'
 import domtoimage from 'dom-to-image'
-import CodeMirror from '@uiw/react-codemirror'
-import { okaidia } from '@uiw/codemirror-theme-okaidia'
-import { javascript } from '@codemirror/lang-javascript'
-import { EditorView, placeholder } from '@codemirror/view'
 import { Typography } from '@/components/ui/Typography'
 import { Button } from '@/components/ui/Button'
 import { Popover } from '@/components/ui/Popover'
 import { AppIcon } from '@/components/icons'
-import { KebabHorizontalIcon } from '@primer/octicons-react'
+import { ArrowSwitchIcon, KebabHorizontalIcon, TrashIcon } from '@primer/octicons-react'
+import { CodeEditor } from '@/components/shared/CodeEditor'
+
+const SAMPLE_CODE = `import React, { useState } from 'react'
+
+export function EasterEgg() {
+    const [isClicked, setIsClicked] = useState(false)
+
+    function handleButtonClick() {
+    setIsClicked(!isClicked)
+    }
+
+    return (
+    <div className="text-center p-12">
+        <p className="text-2xl my-5 text-green-600">{isClicked ? 'Secret mode!' : 'Click to unlock the secret.'}</p>
+        <button onClick={handleButtonClick} className="px-6 py-3 text-lg bg-steelblue text-white rounded">
+        {isClicked ? 'Deactivate' : 'Activate'}
+        </button>
+    </div>
+    )
+}`
 
 export default function Home() {
-    const sample = `import React, { useState } from 'react'
-
-  export function EasterEgg() {
-      const [isClicked, setIsClicked] = useState(false)
-  
-      function handleButtonClick() {
-      setIsClicked(!isClicked)
-      }
-  
-      return (
-      <div className="text-center p-12">
-          <p className="text-2xl my-5 text-green-600">{isClicked ? 'Secret mode!' : 'Click to unlock the secret.'}</p>
-          <button onClick={handleButtonClick} className="px-6 py-3 text-lg bg-steelblue text-white rounded">
-          {isClicked ? 'Deactivate' : 'Activate'}
-          </button>
-      </div>
-      )
-  }`
-    const [code, setCode] = useState(sample)
-    const textareaRef = useRef<HTMLTextAreaElement>(null)
-
-    useEffect(() => {
-        if (textareaRef.current) {
-            textareaRef.current.style.height = 'auto'
-            textareaRef.current.style.height = `${textareaRef.current.scrollHeight}px`
-        }
-    }, [code])
+    const [code, setCode] = useState(SAMPLE_CODE)
+    const [compareCode, setCompareCode] = useState('')
+    const [compareMode, setCompareMode] = useState(false)
 
     useEffect(() => {
         handleFormat()
@@ -62,7 +54,20 @@ export default function Home() {
                 bracketSameLine: true,
                 semi: false
             })
+
+            const formattedCompareCode = await prettier.format(compareCode, {
+                parser: 'flow',
+                plugins: [flow, esTree, html, ts],
+                trailingComma: 'none',
+                printWidth: 120,
+                tabWidth: 2,
+                singleQuote: true,
+                bracketSameLine: true,
+                semi: false
+            })
+
             setCode(formattedCode)
+            setCompareCode(formattedCompareCode)
         } catch (error) {
             alert(`Error formatting code:${error}`)
             console.error('Error formatting code:', error)
@@ -87,7 +92,7 @@ export default function Home() {
     }
 
     return (
-        <div className='mx-auto max-w-4xl px-4 sm:px-6 md:px-10 pt-14 lg:pt-28'>
+        <div className='mx-auto max-w-5xl px-4 sm:px-6 md:px-10 pt-14 lg:pt-28'>
             <div className='py-8 flex justify-center'>
                 <div className='flex flex-col gap-y-4 max-w-3xl items-center'>
                     <Typography variant='h2' className='text-center'>
@@ -114,9 +119,18 @@ export default function Home() {
                                 }
                                 options={[
                                     {
+                                        icon: <ArrowSwitchIcon className='size-4' />,
+                                        text: `${compareMode ? 'Switch to standard mode' : 'Switch to compare mode'}`,
+                                        onClick: () => {
+                                            setCompareMode(!compareMode)
+                                        }
+                                    },
+                                    {
+                                        icon: <TrashIcon className='size-4' />,
                                         text: 'Clear code',
                                         onClick: () => {
                                             setCode('')
+                                            setCompareCode('')
                                         }
                                     }
                                 ]}
@@ -129,7 +143,7 @@ export default function Home() {
                         </div>
                     </div>
                     <div className='screenshot p-8 bg-blue-300 bg-gradient-to-br from-blue-300 to-indigo-300 rounded-lg'>
-                        <div className='flex flex-col px-0.5 pb-4 bg-black rounded-lg min-h-20'>
+                        <div className='flex flex-col pb-2 bg-black rounded-lg min-h-20'>
                             <div className='flex items-center justify-between p-3'>
                                 <div className='flex gap-x-1.5'>
                                     <div className='size-3 bg-red-500 rounded-full' />
@@ -142,19 +156,10 @@ export default function Home() {
                                 />
                                 <div className='w-12' />
                             </div>
-                            <CodeMirror
-                                value={code}
-                                theme={okaidia}
-                                extensions={[
-                                    javascript({ jsx: true }),
-                                    EditorView.lineWrapping,
-                                    placeholder('Enter your code here...')
-                                ]}
-                                onChange={(value: any) => {
-                                    setCode(value)
-                                }}
-                                className='text-sm'
-                            />
+                            <div className='flex gap-x-2 px-2'>
+                                <CodeEditor code={code} setCode={setCode} />
+                                {compareMode && <CodeEditor code={compareCode} setCode={setCompareCode} />}
+                            </div>
                         </div>
                     </div>
                 </div>
