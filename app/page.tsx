@@ -44,7 +44,6 @@ export default function Home() {
             textareaRef.current.style.height = 'auto'
             textareaRef.current.style.height = `${textareaRef.current.scrollHeight}px`
         }
-        handleFormat()
     }, [code])
 
     useEffect(() => {
@@ -109,7 +108,7 @@ export default function Home() {
                             <Popover
                                 anchor='bottom start'
                                 buttonElement={
-                                    <div className='p-1 border border-black flex items-center justify-center h-8 w-8 rounded-full'>
+                                    <div className='p-1 border border-black hover:bg-black/5 transition flex items-center justify-center h-8 w-8 rounded-full'>
                                         <KebabHorizontalIcon className='w-4 h-4 fill-black' />
                                     </div>
                                 }
