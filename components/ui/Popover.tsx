@@ -3,20 +3,22 @@ import DefaultTransition from '../shared/DefaultTransition'
 
 type PopoverOptionProps = {
     sectionTitle?: string
+    icon?: JSX.Element
     text: string
     onClick: (() => void) | (() => Promise<void>)
     divider?: boolean
     className?: string
 }
 
-function PopoverOption({ text, onClick, className }: PopoverOptionProps) {
+function PopoverOption({ icon, text, onClick, className }: PopoverOptionProps) {
     return (
         <PopoverButton
             type='button'
-            className={`text-left text-textSecondary text-sm font-medium outline-none hover:bg-black/5 px-3 py-2 rounded-md ${
+            className={`text-left flex items-center text-textSecondary fill-textSecondary text-sm font-medium outline-none hover:text-textPrimary hover:bg-black/5 px-3 py-2 rounded-md ${
                 className ? className : ''
             }`}
             onClick={onClick}>
+            {icon && <span className='mr-2'>{icon}</span>}
             {text}
         </PopoverButton>
     )
@@ -48,7 +50,7 @@ export const Popover = ({ anchor, options, buttonElement }: PopoverProps) => {
             <DefaultTransition>
                 <PopoverPanel
                     anchor={anchor}
-                    className='bg-white w-52 absolute z-10 p-1 border shadow-md rounded-md mt-2'>
+                    className='bg-white w-60 absolute z-10 p-1 border shadow-md rounded-md mt-2'>
                     <div className='flex flex-col text-left'>
                         {options.map((option, index) => (
                             <PopoverOption key={index} {...option} />
