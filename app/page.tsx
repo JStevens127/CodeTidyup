@@ -58,31 +58,16 @@ export default function Home() {
                         semi: false
                     })
                 } catch (flowError) {
-                    console.error('Flow formatting error:', flowError)
-                    try {
-                        formattedCode = await prettier.format(code, {
-                            parser: 'typescript',
-                            plugins: [ts, esTree],
-                            trailingComma: 'none',
-                            printWidth: 120,
-                            tabWidth: 2,
-                            singleQuote: true,
-                            bracketSameLine: true,
-                            semi: false
-                        })
-                    } catch (tsError) {
-                        console.error('TypeScript formatting error:', tsError)
-                        formattedCode = await prettier.format(code, {
-                            parser: 'json',
-                            plugins: [esTree],
-                            trailingComma: 'none',
-                            printWidth: 120,
-                            tabWidth: 2,
-                            singleQuote: true,
-                            bracketSameLine: true,
-                            semi: false
-                        })
-                    }
+                    formattedCode = await prettier.format(code, {
+                        parser: 'typescript',
+                        plugins: [ts, esTree],
+                        trailingComma: 'none',
+                        printWidth: 120,
+                        tabWidth: 2,
+                        singleQuote: true,
+                        bracketSameLine: true,
+                        semi: false
+                    })
                 }
                 return formattedCode
             }
@@ -188,16 +173,24 @@ export default function Home() {
                         </div>
                     </div>
                 </div>
-                <div className='flex items-center justify-center gap-x-2 pb-20'>
-                    <AppIcon className='w-auto h-3 fill-textSecondary' />
+                <div className='flex items-center justify-start gap-x-2 pb-20'>
+                    <AppIcon className='w-auto h-3 fill-textPrimary' />
                     <Typography variant='body2' color='textSecondary'>
                         Created by{' '}
                         <a
                             href='https://x.com/jackstevensdev'
                             target='_blank'
-                            className='text-blue-700 hover:text-blue-800'>
+                            className='text-black underline underline-offset-4 decoration-gray-400 hover:decoration-gray-700'>
                             Jack Stevens
+                        </a>{' '}
+                        and open sourced on{' '}
+                        <a
+                            href='https://github.com/JStevens127/CodeTidyup'
+                            target='_blank'
+                            className='text-black underline underline-offset-4 decoration-gray-400 hover:decoration-gray-700'>
+                            Github
                         </a>
+                        {'.'}
                     </Typography>
                 </div>
             </div>
