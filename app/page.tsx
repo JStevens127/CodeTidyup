@@ -44,32 +44,56 @@ export default function Home() {
 
     const handleFormat = async () => {
         try {
-            const formattedCode = await prettier.format(code, {
-                parser: 'flow',
-                plugins: [flow, esTree, html, ts],
-                trailingComma: 'none',
-                printWidth: 120,
-                tabWidth: 2,
-                singleQuote: true,
-                bracketSameLine: true,
-                semi: false
-            })
+            const formatCode = async (code: string) => {
+                let formattedCode
+                try {
+                    formattedCode = await prettier.format(code, {
+                        parser: 'flow',
+                        plugins: [flow, esTree, html, ts],
+                        trailingComma: 'none',
+                        printWidth: 120,
+                        tabWidth: 2,
+                        singleQuote: true,
+                        bracketSameLine: true,
+                        semi: false
+                    })
+                } catch (flowError) {
+                    console.error('Flow formatting error:', flowError)
+                    try {
+                        formattedCode = await prettier.format(code, {
+                            parser: 'typescript',
+                            plugins: [ts, esTree],
+                            trailingComma: 'none',
+                            printWidth: 120,
+                            tabWidth: 2,
+                            singleQuote: true,
+                            bracketSameLine: true,
+                            semi: false
+                        })
+                    } catch (tsError) {
+                        console.error('TypeScript formatting error:', tsError)
+                        formattedCode = await prettier.format(code, {
+                            parser: 'json',
+                            plugins: [esTree],
+                            trailingComma: 'none',
+                            printWidth: 120,
+                            tabWidth: 2,
+                            singleQuote: true,
+                            bracketSameLine: true,
+                            semi: false
+                        })
+                    }
+                }
+                return formattedCode
+            }
 
-            const formattedCompareCode = await prettier.format(compareCode, {
-                parser: 'flow',
-                plugins: [flow, esTree, html, ts],
-                trailingComma: 'none',
-                printWidth: 120,
-                tabWidth: 2,
-                singleQuote: true,
-                bracketSameLine: true,
-                semi: false
-            })
+            const formattedCode = await formatCode(code)
+            const formattedCompareCode = await formatCode(compareCode)
 
             setCode(formattedCode)
             setCompareCode(formattedCompareCode)
         } catch (error) {
-            alert(`Error formatting code:${error}`)
+            alert(`Error formatting code: ${error}`)
             console.error('Error formatting code:', error)
         }
     }
