@@ -11,7 +11,7 @@ import { Typography } from '@/components/ui/Typography'
 import { Button } from '@/components/ui/Button'
 import { Popover } from '@/components/ui/Popover'
 import { AppIcon } from '@/components/icons'
-import { ArrowSwitchIcon, KebabHorizontalIcon, TrashIcon } from '@primer/octicons-react'
+import { ArrowSwitchIcon, DownloadIcon, KebabHorizontalIcon, TrashIcon } from '@primer/octicons-react'
 import { CodeEditor } from '@/components/shared/CodeEditor'
 
 const SAMPLE_CODE = `import React, { useState } from 'react'
@@ -161,7 +161,8 @@ export default function Home() {
                             />
                         </div>
                         <div className='flex flex-row items-center gap-x-2'>
-                            <Button className='items-center flex' onClick={handleExport}>
+                            <Button className='items-center flex gap-x-2' onClick={handleExport}>
+                                <DownloadIcon className='w-4 h-4 fill-white' />
                                 Export
                             </Button>
                         </div>
@@ -187,8 +188,8 @@ export default function Home() {
                         </div>
                     </div>
                 </div>
-                <div className='flex items-center justify-center gap-x-3 pb-20'>
-                    <AppIcon className='w-auto h-4 fill-textSecondary' />
+                <div className='flex items-center justify-center gap-x-2 pb-20'>
+                    <AppIcon className='w-auto h-3 fill-textSecondary' />
                     <Typography variant='body2' color='textSecondary'>
                         Created by{' '}
                         <a
